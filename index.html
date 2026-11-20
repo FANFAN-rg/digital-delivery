@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>数字化交付平台</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;background:#f0f2f5;color:#1a1a1a;line-height:1.6;padding-bottom:80px}
+.nav{background:linear-gradient(135deg,#1565c0,#0d47a1);padding:44px 20px 20px;position:sticky;top:0;z-index:100;box-shadow:0 4px 20px rgba(13,71,161,.3)}
+.nav h1{color:#fff;font-size:18px;font-weight:600;display:flex;align-items:center;gap:8px}
+.nav h1::before{content:"🏗️";font-size:20px}
+.nav p{color:rgba(255,255,255,.75);font-size:12px;margin-top:4px}
+.nav-badge{display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.15);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.2);color:#fff;padding:4px 12px;border-radius:20px;font-size:11px;margin-top:10px}
+.search{margin:12px 16px;background:#fff;border-radius:12px;padding:10px 14px;display:flex;align-items:center;gap:8px;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.search::before{content:"🔍";font-size:14px;opacity:.5}
+.search span{font-size:13px;color:#999}
+.card{background:#fff;border-radius:16px;margin:12px 16px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.04)}
+.card-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid #f0f0f0}
+.card-header h2{font-size:15px;font-weight:600;color:#1565c0;display:flex;align-items:center;gap:6px}
+.card-header h2::before{content:"";width:4px;height:15px;background:linear-gradient(180deg,#1565c0,#42a5f5);border-radius:2px}
+.card-header .more{font-size:12px;color:#999}
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#f0f0f0}
+.info-item{padding:12px 14px;background:#fff}
+.info-item label{font-size:11px;color:#999;display:block;margin-bottom:2px}
+.info-item span{font-size:13px;font-weight:500;color:#333}
+.check-item{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid #f8f8f8}
+.check-item:last-child{border:none}
+.check-item .left{display:flex;align-items:center;gap:10px}
+.check-item .icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px}
+.check-item .icon.pass{background:#e8f5e9;color:#2e7d32}
+.check-item .icon.warn{background:#fff3e0;color:#e65100}
+.check-item .name{font-size:13px;color:#333}
+.check-item .status{font-size:12px;font-weight:600;padding:3px 10px;border-radius:10px}
+.status.pass{background:#e8f5e9;color:#2e7d32}
+.status.warn{background:#fff3e0;color:#e65100}
+.file-item{display:flex;align-items:center;gap:10px;padding:10px 16px;border-bottom:1px solid #f8f8f8}
+.file-item:last-child{border:none}
+.file-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px}
+.file-icon.pdf{background:#ffebee;color:#c62828}
+.file-icon.img{background:#e3f2fd;color:#1565c0}
+.file-icon.bim{background:#f3e5f5;color:#7b1fa2}
+.file-info{flex:1}
+.file-info .name{font-size:13px;color:#333}
+.file-info .meta{font-size:11px;color:#999;margin-top:1px}
+.timeline{padding:14px 16px}
+.tl-item{display:flex;gap:12px;position:relative;padding-bottom:16px}
+.tl-item:last-child{padding-bottom:0}
+.tl-item::before{content:"";position:absolute;left:14px;top:24px;bottom:-16px;width:2px;background:#e0e0e0}
+.tl-item:last-child::before{display:none}
+.tl-dot{width:30px;height:30px;border-radius:50%;background:#e3f2fd;border:3px solid #fff;box-shadow:0 0 0 2px #bbdefb;display:flex;align-items:center;justify-content:center;font-size:10px;color:#1565c0;flex-shrink:0;z-index:1}
+.tl-content{flex:1;background:#f8f9fa;border-radius:10px;padding:10px 12px}
+.tl-content .date{font-size:11px;color:#999}
+.tl-content .desc{font-size:13px;color:#333;margin-top:2px}
+.bim-preview{margin:12px 16px;background:linear-gradient(135deg,#0d47a1,#1976d2);border-radius:16px;padding:20px;color:#fff;position:relative;overflow:hidden}
+.bim-preview::before{content:"";position:absolute;right:-20px;top:-20px;width:100px;height:100px;background:rgba(255,255,255,.05);border-radius:50%}
+.bim-preview::after{content:"";position:absolute;right:10px;bottom:-10px;width:60px;height:60px;background:rgba(255,255,255,.05);border-radius:50%}
+.bim-preview h3{font-size:15px;margin-bottom:6px}
+.bim-preview p{font-size:12px;opacity:.8;margin-bottom:12px}
+.bim-btn{display:inline-block;background:rgba(255,255,255,.2);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.3);padding:6px 16px;border-radius:20px;font-size:12px}
+.footer{text-align:center;padding:20px 16px;font-size:11px;color:#bbb}
+</style>
+</head>
+<body>
+<div class="nav">
+  <h1>数字化交付平台</h1>
+  <p>星河湾智慧商务中心 · 竣工验收资料中心</p>
+  <span class="nav-badge">✅ 已通过五方验收</span>
+</div>
+<div class="search"><span>搜索验收记录、设备台账、BIM模型...</span></div>
+<div class="card">
+  <div class="card-header"><h2>项目概况</h2><span class="more">详情 ></span></div>
+  <div class="info-grid">
+    <div class="info-item"><label>工程名称</label><span>星河湾智慧商务中心</span></div>
+    <div class="info-item"><label>建筑面积</label><span>128,600 ㎡</span></div>
+    <div class="info-item"><label>结构类型</label><span>框架-核心筒</span></div>
+    <div class="info-item"><label>建筑层数</label><span>地上38层/地下3层</span></div>
+    <div class="info-item"><label>建设单位</label><span>星河置地有限公司</span></div>
+    <div class="info-item"><label>施工单位</label><span>中建八局集团有限公司</span></div>
+    <div class="info-item"><label>设计单位</label><span>华东建筑设计研究院</span></div>
+    <div class="info-item"><label>竣工日期</label><span>2026-11-15</span></div>
+  </div>
+</div>
+<div class="bim-preview">
+  <h3>📐 竣工BIM模型</h3>
+  <p>LOD400 · 轻量化模型已上线</p>
+  <span class="bim-btn">点击查看三维模型</span>
+</div>
+<div class="card">
+  <div class="card-header"><h2>分部分项验收清单</h2><span class="more">全部 ></span></div>
+  <div class="check-item"><div class="left"><div class="icon pass">🏗️</div><span class="name">地基与基础工程</span></div><span class="status pass">✅ 合格</span></div>
+  <div class="check-item"><div class="left"><div class="icon pass">🧱</div><span class="name">主体结构工程</span></div><span class="status pass">✅ 合格</span></div>
+  <div class="check-item"><div class="left"><div class="icon pass">🎨</div><span class="name">建筑装饰装修</span></div><span class="status pass">✅ 合格</span></div>
+  <div class="check-item"><div class="left"><div class="icon pass">🏠</div><span class="name">建筑屋面工程</span></div><span class="status pass">✅ 合格</span></div>
+  <div class="check-item"><div class="left"><div class="icon pass">💧</div><span class="name">给排水及供暖</span></div><span class="status pass">✅ 合格</span></div>
+  <div class="check-item"><div class="left"><div class="icon pass">⚡</div><span class="name">建筑电气工程</span></div><span class="status pass">✅ 合格</span></div>
+  <div class="check-item"><div class="left"><div class="icon pass">🌬️</div><span class="name">通风与空调</span></div><span class="status pass">✅ 合格</span></div>
+  <div class="check-item"><div class="left"><div class="icon pass">📡</div><span class="name">智能建筑系统</span></div><span class="status pass">✅ 合格</span></div>
+  <div class="check-item"><div class="left"><div class="icon pass">🛗</div><span class="name">电梯工程</span></div><span class="status pass">✅ 合格</span></div>
+  <div class="check-item"><div class="left"><div class="icon warn">🌿</div><span class="name">节能工程</span></div><span class="status warn">⚠️ 整改完成</span></div>
+</div>
+<div class="card">
+  <div class="card-header"><h2>验收资料档案</h2><span class="more">全部 ></span></div>
+  <div class="file-item"><div class="file-icon img">📷</div><div class="file-info"><div class="name">隐蔽工程影像记录</div><div class="meta">203 份 · 已归档</div></div></div>
+  <div class="file-item"><div class="file-icon pdf">📄</div><div class="file-info"><div class="name">材料检测报告</div><div class="meta">512 份 · 已归档</div></div></div>
+  <div class="file-item"><div class="file-icon pdf">📋</div><div class="file-info"><div class="name">分户验收记录表</div><div class="meta">284 份 · 已归档</div></div></div>
+  <div class="file-item"><div class="file-icon pdf">🔥</div><div class="file-info"><div class="name">消防专项验收意见书</div><div class="meta">已签章 · 2026-11-12</div></div></div>
+  <div class="file-item"><div class="file-icon pdf">📐</div><div class="file-info"><div class="name">规划核实合格书</div><div class="meta">已签章 · 2026-11-10</div></div></div>
+  <div class="file-item"><div class="file-icon bim">🧊</div><div class="file-info"><div class="name">竣工BIM模型（LOD400）</div><div class="meta">轻量化 · 已上线</div></div></div>
+  <div class="file-item"><div class="file-icon pdf">✍️</div><div class="file-info"><div class="name">五方竣工验收报告</div><div class="meta">已签章 · 2026-11-15</div></div></div>
+  <div class="file-item"><div class="file-icon pdf">🏛️</div><div class="file-info"><div class="name">工程竣工备案表</div><div class="meta">已备案 · 2026-11-18</div></div></div>
+</div>
+<div class="card">
+  <div class="card-header"><h2>整改闭环记录</h2><span class="more">全部 ></span></div>
+  <div class="timeline">
+    <div class="tl-item"><div class="tl-dot">✓</div><div class="tl-content"><div class="date">2026-11-10</div><div class="desc">节能工程外墙保温厚度不足，已整改完成，复检合格</div></div></div>
+    <div class="tl-item"><div class="tl-dot">✓</div><div class="tl-content"><div class="date">2026-11-08</div><div class="desc">B2层消防管线碰撞问题，通过BIM优化后重新敷设</div></div></div>
+    <div class="tl-item"><div class="tl-dot">✓</div><div class="tl-content"><div class="date">2026-11-05</div><div class="desc">3F走廊净高不足，调整管线排布后达标</div></div></div>
+  </div>
+</div>
+<div class="footer">数字化交付平台 v2.0 · 扫码查看<br>本页面数据来源于BIM竣工模型与电子档案系统</div>
+</body>
+</html>
